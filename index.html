@@ -294,6 +294,12 @@ form .btn{justify-self:start}
   .about-col{align-items:stretch}
   form .btn{justify-self:stretch}
 }
+/* okrugli play/pause gumb ispod avatara */
+.play.play-icon{width:56px;height:56px;min-width:56px;min-height:56px;padding:0;border-radius:50%;align-self:center;gap:0}
+.play-icon svg{width:24px;height:24px}
+.play-icon .i-pause,.play-icon.is-playing .i-play{display:none}
+.play-icon.is-playing .i-pause{display:block}
+.play.play-icon:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:50%}
 @media (prefers-reduced-motion:reduce){.cursor{display:none}}
 
 /* ===== Bijele sekcije (shade-a) ===== */
@@ -395,7 +401,7 @@ body{background:#fff}
     <div class="container about-grid">
       <div class="about-col">
         <div class="about-pic"><div class="dots" aria-hidden="true"></div><div class="disc talk"><video id="talk" src="avatar-talk.mp4" poster="avatar-talk-poster.jpg" playsinline preload="metadata" aria-label="Video: Josipa se predstavlja na engleskom" aria-describedby="cap" data-i18n-aria="videoLabel"></video></div></div>
-        <button type="button" class="play" id="playBtn" aria-pressed="false"><span class="ico" aria-hidden="true">▶</span> <span data-i18n="play">Poslušaj me</span></button>
+        <button type="button" class="play play-icon" id="playBtn" aria-label="Poslušaj me" title="Poslušaj me"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg></button>
         <p class="caption sr-only" id="cap"><span data-i18n="cap">„Dobro došli na moj portfolio! Uživajte u istraživanju i povežimo se.”</span></p>
       </div>
       <div>
@@ -653,7 +659,7 @@ const T = {
   title:"Josipa Filipović – UX/UI design & Webflow"
  },
  hr:{
-  pause:"Pauza", roles:["UX/UI dizajnerica","Webflow developerica","web dizajnerica"],
+  play:"Poslušaj me", pause:"Pauziraj", roles:["UX/UI dizajnerica","Webflow developerica","web dizajnerica"],
   errName:"Upišite ime i prezime.", errEmail:"Upišite ispravnu e-mail adresu.", errMsg:"Napišite kratku poruku.",
   ok:"Hvala! Vaša poruka je poslana i javit ću vam se u roku od dva radna dana.", fail:"Nešto nije u redu. Pišite mi izravno na josipa.filipovic984@gmail.com.",
   title:"Josipa Filipović – UX/UI dizajn i Webflow"
@@ -680,8 +686,12 @@ try{const s=localStorage.getItem('lang'); if(s==='en')setLang('en')}catch(e){}
 
 // talking avatar
 const v=document.getElementById('talk'), pb=document.getElementById('playBtn');
-function setBtn(p){pb.setAttribute('aria-pressed',p);pb.querySelector('.ico').textContent=p?'❚❚':'▶';
-  pb.querySelector('[data-i18n]').textContent=p?T[lang].pause:T[lang].play}
+function setBtn(p){const t=p?T[lang].pause:T[lang].play;
+  pb.classList.toggle('is-playing',p); pb.setAttribute('aria-label',t); pb.title=t}
+setBtn(false);
+v.addEventListener('play',()=>setBtn(true));
+v.addEventListener('pause',()=>setBtn(false));
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setBtn(!v.paused)));
 const cap=document.getElementById('cap');
 pb.addEventListener('click',()=>{ if(v.paused){v.muted=false;v.play().then(()=>{setBtn(true)}).catch(()=>{})} else {v.pause();setBtn(false)} });
 v.addEventListener('ended',()=>{v.currentTime=0;setBtn(false);0});
