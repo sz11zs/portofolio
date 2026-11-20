@@ -295,8 +295,10 @@ form .btn{justify-self:start}
   form .btn{justify-self:stretch}
 }
 /* okrugli play/pause gumb ispod avatara */
-.play.play-icon{width:56px;height:56px;min-width:56px;min-height:56px;padding:0;border-radius:50%;align-self:center;gap:0}
-.play-icon svg{width:24px;height:24px}
+.play.play-icon{width:64px;height:64px;min-width:64px;min-height:64px;padding:0;border-radius:50%;align-self:center;gap:0}
+.play.play-icon{background:transparent;border-color:transparent;color:#fff}
+.play.play-icon:hover{background:transparent;border-color:transparent;color:var(--accent)}
+.play-icon svg{width:60px;height:60px}
 .play-icon .i-pause,.play-icon.is-playing .i-play{display:none}
 .play-icon.is-playing .i-pause{display:block}
 .play.play-icon:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:50%}
