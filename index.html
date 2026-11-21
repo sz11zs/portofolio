@@ -356,6 +356,12 @@ body{background:#fff}
 .pcard{display:flex;flex-direction:column}
 .pcard p{flex:1}
 .pcard .plinks{margin-top:auto}
+.plinks{gap:8px 22px;align-content:flex-start}
+/* poravnanje dijelova kartica (slika, oznake, naslov, opis, linkovi) u istoj liniji kroz cijeli red */
+@supports (grid-template-rows:subgrid){
+  .pcard{display:grid;grid-row:span 5;grid-template-rows:subgrid;row-gap:0}
+  .pcard .plinks{margin-top:0}
+}
 </style>
 </head>
 <body>
